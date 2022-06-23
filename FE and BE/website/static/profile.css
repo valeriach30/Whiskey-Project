@@ -1,0 +1,45 @@
+.student-profile .card {
+    border-radius: 10px;
+}
+
+.student-profile .card .card-header .profile_img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin: 10px auto;
+    border: 10px solid #ccc;
+    border-radius: 50%;
+}
+
+.student-profile .card h3 {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.student-profile .card p {
+    font-size: 16px;
+    color: #000;
+}
+
+.student-profile .table th,
+.student-profile .table td {
+    font-size: 14px;
+    padding: 5px 10px;
+    color: #000;
+}
+
+.editbutton {
+    background: none;
+    color: #344e41;
+    border: 2px solid #344e41;
+    font-size: 1em;
+    transition: color 0.2s, border 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.editbutton:hover {
+    border-color: #335c67;
+    color: black;
+    box-shadow: 0 0.5em 0.5em -0.4em #335c67;
+    transform: translateY(-0.25em);
+    cursor: pointer;
+}

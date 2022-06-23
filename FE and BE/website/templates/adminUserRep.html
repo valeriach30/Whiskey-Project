@@ -1,0 +1,103 @@
+<!-- EXTEND BASE -->
+{%extends "base.html"%}
+
+<!-- TITLE -->
+{% block title %}Admin{% endblock %}
+
+<!-------------------------------- DETERMINE THE COUNTRY FOR THE NAV BAR FLAG---------------------------------->
+{% block country %}
+{% if country == '1'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://images.emojiterra.com/twitter/512px/1f1fa-1f1f8.png" />
+</button>
+{% endif %}
+{% if country == '2'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://hotemoji.com/images/dl/h/flag-of-ireland-emoji-by-twitter.png" />
+</button>
+{% endif %}
+{% if country == '3'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon"
+        src="https://images.emojiterra.com/twitter/512px/1f3f4-e0067-e0062-e0073-e0063-e0074-e007f.png" />
+</button>
+{% endif %}
+{% endblock%}
+
+{% block content%}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='admin.css')}}">
+<div class="formA">
+
+    <!--------------------------------USERS REPORT--------------------------------->
+    <form action="/usersReport" method="POST">
+        <h3>Users Reports</h3>
+        <input type="checkbox" name="CountryChBox" id="CountryChBox" value="1">
+        <label for="CountryChBox" style="color: black;">By country</label>
+        <p></p>
+
+        <select id="country" name="country">
+            <option value="1">Ireland</option>
+            <option value="2">Scotland</option>
+            <option value="3">United States</option>
+        </select>
+
+        <p></p>
+        <input type="checkbox" name="suscriptionChBox" id="suscriptionChBox" value="1">
+        <label for="suscriptionChBox" style="color: black;">By type of suscription</label>
+        <p></p>
+        <select id="suscription" name="suscription">
+            {% for name in names%}
+            <option value="{{loop.index}}">{{name.name}}</option>
+            {% endfor%}
+        </select>
+        <p></p>
+
+        <input type="checkbox" id="SalesChBox" name="SalesChBox" value="1">
+        <label for="SalesChBox" style="color: black;">By Sales</label>
+        <p></p>
+        <input type="text" id="Sales" name="Sales" placeholder="Number of Sales">
+        <p></p>
+
+        <input type="checkbox" name="shippingChBox" id="shippingChBox" value="1">
+        <label for="shippingChBox" style="color: black;">By shipping cost</label>
+        <p></p>
+        <input type="number" id="shipping" name="shipping" placeholder="Shipping cost">
+        <p></p>
+
+        <input type="checkbox" name="dateChBox" id="dateChBox" value="1">
+        <label for="dateChBox" style="color: black;">By Date</label>
+        <p></p>
+        <input type="date" id="date" name="date" placeholder="Date">
+        <p></p>
+
+        <input type="submit" value="Submit">
+    </form>
+    <br><br>
+    <table style="text-align: center; margin: 0 auto; text-align: left;">
+        <tr bgcolor='grey' align='center'>
+            <th>Username</th>
+            <th>Suscription</th>
+            <th>Country</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Shipping</th>
+            <th>Date</th>
+        </tr>
+        {% for user in usersReport%}
+        <tr bgcolor='lightgrey' align='center'>
+            <td>{{user.Username}}</td>
+            <td>{{user.SubscriptionName}}</td>
+            <td>{{user.country}}</td>
+            <td>{{user.Product}}</td>
+            <td>{{user.Quantity}}</td>
+            <td>{{user.Shipping}}</td>
+            <td>{{user.DeliveryDate}}</td>
+        </tr>
+        {% endfor%}
+    </table>
+</div>
+
+{% endblock%}

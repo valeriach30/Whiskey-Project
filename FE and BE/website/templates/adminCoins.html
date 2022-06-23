@@ -1,0 +1,97 @@
+<!-- EXTEND BASE -->
+{%extends "base.html"%}
+
+<!-- TITLE -->
+{% block title %}Admin{% endblock %}
+
+<!-------------------------------- DETERMINE THE COUNTRY FOR THE NAV BAR FLAG---------------------------------->
+{% block country %}
+{% if country == '1'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://images.emojiterra.com/twitter/512px/1f1fa-1f1f8.png" />
+</button>
+{% endif %}
+{% if country == '2'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://hotemoji.com/images/dl/h/flag-of-ireland-emoji-by-twitter.png" />
+</button>
+{% endif %}
+{% if country == '3'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon"
+        src="https://images.emojiterra.com/twitter/512px/1f3f4-e0067-e0062-e0073-e0063-e0074-e007f.png" />
+</button>
+{% endif %}
+{% endblock%}
+{% block content%}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='checkout.css')}}">
+
+
+<!-- -------------------------------- FLASH MESSAGES  ---------------------------------->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+{% if category == 'error'%}
+<div class="alert alert-danger alter-dismissable fade show" role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% else %}
+<div class="alert alert-success alter-dismissable fade show" role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endwith%}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='admin.css')}}">
+<div class="formA">
+    <h1></h1>
+    <!--------------------------------ADD NEW COIN--------------------------------->
+    <h3>Add a new coin</h3>
+    <form action="/addCoin" method="POST">
+        <input type="text" id="Name" name="Name" placeholder="Name">
+        <input type="text" id="symbol" name="symbol" placeholder="symbol">
+        <input type="text" id="country" name="country" placeholder="country">
+        <input type="submit" value="Submit">
+    </form>
+    <hr>
+
+    <!--------------------------------MODIFY COIN--------------------------------->
+    <h3>Modify Coin</h3>
+    <form action="/modifyCoin" method="POST">
+        <select id="coinId" name="coinId">
+            {% for coin in coins%}
+            <option value="{{loop.index}}">{{coin.name}}</option>
+            {% endfor%}
+        </select>
+        <p></p>
+        <input type="text" id="Name" name="Name" placeholder="Name">
+        <input type="text" id="symbol" name="symbol" placeholder="symbol">
+        <input type="text" id="country" name="country" placeholder="country">
+        <input type="submit" value="Submit">
+    </form>
+    <hr>
+
+    <!--------------------------------DELETE COIN--------------------------------->
+    <h3>Delete Coin</h3>
+    <form action="/deleteCoin" method="POST">
+        <select id="coinId" name="coinId">
+            {% for coin in coins%}
+            <option value="{{loop.index}}">{{coin.name}}</option>
+            {% endfor%}
+        </select>
+        <p></p>
+        <input type="submit" value="Submit">
+    </form>
+    <hr>
+</div>
+{% endblock%}

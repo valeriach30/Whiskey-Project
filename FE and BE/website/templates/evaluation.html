@@ -1,0 +1,111 @@
+<!-- EXTEND BASE -->
+{%extends "base.html"%}
+
+<!-- TITLE -->
+{% block title %}Admin{% endblock %}
+
+<!-------------------------------- DETERMINE THE COUNTRY FOR THE NAV BAR FLAG---------------------------------->
+{% block country %}
+{% if country == '1'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://images.emojiterra.com/twitter/512px/1f1fa-1f1f8.png" />
+</button>
+{% endif %}
+{% if country == '2'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://hotemoji.com/images/dl/h/flag-of-ireland-emoji-by-twitter.png" />
+</button>
+{% endif %}
+{% if country == '3'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon"
+        src="https://images.emojiterra.com/twitter/512px/1f3f4-e0067-e0062-e0073-e0063-e0074-e007f.png" />
+</button>
+{% endif %}
+{% endblock%}
+
+{% block content%}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='comments.css')}}">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="page">
+    <section class="content-item" id="comments">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8" style="width: 50%; margin: 0 auto;">
+
+                    <h3>{{quantityEv}} Evaluation</h3>
+
+                    <div class="media">
+                        <a class="pull-left" href="#"><img class="media-object"
+                                src="https://cdn-icons-png.flaticon.com/512/3003/3003035.png" alt=""></a>
+                        <div class="media-body">
+                            <input type="hidden" id="idUser" value="{{eval.idUser}}">
+                            <h4 class="media-heading">{{eval.userName}}
+                                {{eval.surname}}
+                            </h4>
+                            <p>Seller: {{eval.sellerName}} {{eval.sellerSurname}}
+                                | Delivery Person: {{eval.DeliverName}} {{eval.DeliverSurname}}
+                            </p>
+                            <p>Product: {{eval.name}}</p>
+                            <p>Comment: {{eval.comment}} | Calification: {{eval.calification}}</p>
+                            <ul class="list-unstyled list-inline media-detail pull-left">
+                                <li><i class="fa fa-calendar"></i>{{eval.evDate}}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h3>Answers</h3>
+                    {% for answer in answers%}
+                    <div class="media">
+                        <a class="pull-left" href="#"><img class="media-object"
+                                src="https://cdn-icons-png.flaticon.com/512/219/219986.png" alt=""></a>
+                        <div class="media-body">
+                            <h4 class="media-heading">{{answer.name}} {{answer.surname}}</h4>
+                            <p>{{answer.description}}</p>
+                            <ul class="list-unstyled list-inline media-detail pull-left">
+                                <li><i class="fa fa-calendar"></i>{{answer.dateResp}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    {% endfor%}
+                    {% if userisSupervisor == '1'%}
+                    <h3></h3>
+                    <h3>Add new comment</h3>
+                    <fieldset>
+                        <div class="row">
+                            <div class="col-sm-3 col-lg-2 hidden-xs">
+                                <img class="img-responsive" src="https://cdn-icons-png.flaticon.com/512/219/219986.png"
+                                    alt="">
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-9 col-lg-10">
+                                <textarea class="form-control" id="message" placeholder="Your message"
+                                    required=""></textarea>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+                    <button type="submit" value="{{idEvaluation}}" class="btn btn-normal pull-right"
+                        style="background-color: rgb(251, 201, 115);">Submit</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script>
+    $("button").click(function () {
+        var evalId = $(this).val();
+        if (evalId) {
+            var comment = document.getElementById('message').value;
+            var idUser = document.getElementById('idUser').value;
+            window.location = '/answer?evalId=' + evalId + "&comment=" + comment + "&idUser=" + idUser;
+        }
+        else {
+        }
+    });
+</script>
+{% endblock%}

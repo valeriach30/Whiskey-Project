@@ -1,0 +1,188 @@
+<!-- EXTEND BASE -->
+{%extends "base.html"%}
+
+<!-- TITLE -->
+{% block title %}Admin{% endblock %}
+
+<!-------------------------------- DETERMINE THE COUNTRY FOR THE NAV BAR FLAG---------------------------------->
+{% block country %}
+{% if country == '1'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://images.emojiterra.com/twitter/512px/1f1fa-1f1f8.png" />
+</button>
+{% endif %}
+{% if country == '2'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://hotemoji.com/images/dl/h/flag-of-ireland-emoji-by-twitter.png" />
+</button>
+{% endif %}
+{% if country == '3'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon"
+        src="https://images.emojiterra.com/twitter/512px/1f3f4-e0067-e0062-e0073-e0063-e0074-e007f.png" />
+</button>
+{% endif %}
+{% endblock%}
+{% block content%}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='checkout.css')}}">
+
+
+<!-- -------------------------------- FLASH MESSAGES  ---------------------------------->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+{% if category == 'error'%}
+<div class="alert alert-danger alter-dismissable fade show" role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% else %}
+<div class="alert alert-success alter-dismissable fade show" role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endwith%}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='admin.css')}}">
+<div class="formA">
+
+    <!--------------------------------ADD EMPLOYEE--------------------------------->
+    <h3>Add Employees</h3>
+    <form action="/addEmp" method="POST">
+        <input type="text" id="UserName" name="UserName" placeholder="UserName">
+        <input type="text" id="Password" name="Password" placeholder="Password">
+        <select id="userType" name="userType">
+            <option value="1">User</option>
+            <option value="2">Employee</option>
+            <option value="3">Admin</option>
+        </select>
+        <select id="country" name="country">
+            <option value="1">Ireland</option>
+            <option value="2">Scotland</option>
+            <option value="3">United States</option>
+        </select>
+        <input type="text" id="Name" name="Name" placeholder="Name">
+        <p></p>
+        <input type="text" id="Surname" name="Surname" placeholder="Surname">
+        <p></p>
+        <input type="text" id="Email" name="Email" placeholder="Email">
+        <p></p>
+        <input type="text" id="Phone" name="Phone" placeholder="Phone">
+        <p></p>
+        <input type="text" id="NameOnCard" name="NameOnCard" placeholder="Name On Card">
+        <p></p>
+        <input type="text" id="AccountNumber" name="AccountNumber" placeholder="Account Number">
+        <p></p>
+        <input type="date" id="ExpirationDate" name="ExpirationDate" placeholder="">
+        <p></p>
+        <input type="text" id="CVV" name="CVV" placeholder="CVV">
+        <p></p>
+        <select id="paymethod" name="paymethod">
+            <option value="1">Credit Card</option>
+            <option value="2">Debit Card</option>
+        </select>
+        <p></p>
+        <select id="IdJob" name="IdJob">
+            {% for job in jobs%}
+            <option value="{{loop.index}}">{{job.name}}</option>
+            {% endfor%}
+        </select>
+        <p></p>
+        <input type="text" id="salaryLocal" name="salaryLocal" placeholder="salaryLocal">
+        <p></p>
+        <input type="text" id="salaryD" name="salaryD" placeholder="salaryD">
+        <p></p>
+        <button class="btn"> Add Employee</button>
+    </form>
+    <hr>
+    <!--------------------------------MODIFY EMPLOYEE--------------------------------->
+    <h3>Modify Employees</h3>
+    <form action="/modifyEmp" method="POST">
+        <p>Select the name of the employee</p>
+        <select id="employee" name="employee">
+            {% for emp in employees%}
+            <option value="{{loop.index}}">{{emp.name}} {{emp.surname}}</option>
+            {% endfor%}
+        </select>
+        <p>Set the new job</p>
+        <select id="job" name="job">
+            {% for job in jobs%}
+            <option value="{{loop.index}}">{{job.name}}</option>
+            {% endfor%}
+        </select>
+        <p> Set the new salary</p>
+        <input type="text" id="salaryLocal" name="salaryLocal" placeholder="650.99">
+        <p>Set the new salary in dollars</p>
+        <input type="text" id="salaryD" name="salaryD" placeholder="660.99">
+        <p></p>
+        <button class="btn"> Modify Employee</button>
+    </form>
+    <hr>
+    <!--------------------------------DELETE EMPLOYEE--------------------------------->
+    <h3>Delete Employees</h3>
+    <form action="/deleteEmp" method="POST">
+        <p>Select the name of the employee</p>
+        <select id="employee" name="employee">
+            {% for emp in employees%}
+            <option value="{{loop.index}}">{{emp.name}} {{emp.surname}}</option>
+            {% endfor%}
+        </select>
+        <p></p>
+        <button class="btn"> Delete Employee</button>
+    </form>
+    <!--------------------------------EMPLOYEES REPORT--------------------------------->
+    <hr>
+    <h3>Employees Reports</h3>
+    <form action="/employeesReport" method="POST">
+        <input type="checkbox" name="DepartmentChBox" id="DepartmentChBox" value="1">
+        <label for="DepartmentChBox" style="color: black;">By Department</label>
+        <p></p>
+        <select id="Department" name="Department">
+            {% for job in jobs%}
+            <option value="{{loop.index}}">{{job.name}}</option>
+            {% endfor%}
+        </select>
+        <p></p>
+        <input type="checkbox" name="CalificationChBox" id="CalificationChBox" value="1">
+        <label for="CalificationChBox" style="color: black;">By Calification</label>
+        <p></p>
+        <input type="number" id="Calification" name="Calification" placeholder="Calification">
+        <p></p>
+        <input type="checkbox" name="SalaryChBox" id="SalaryChBox" value="1">
+        <label for="SalaryChBox" style="color: black;">By Salary</label>
+        <p></p>
+        <input type="number" id="Salary" name="Salary" placeholder="Local Salary">
+        <p></p>
+        <button class="btn"> Get Report</button>
+    </form>
+    <br><br>
+    <table style="text-align: center; margin: 0 auto; text-align: left;">
+        <tr bgcolor='grey' align='center'>
+            <th>Username</th>
+            <th>Job</th>
+            <th>Salary Local</th>
+            <th>Salary Dollars</th>
+            <th>Calification</th>
+        </tr>
+        {% for employee in employeesReport%}
+        <tr bgcolor='lightgrey' align='center'>
+            <td>{{employee.username}}</td>
+            <td>{{employee.idjob}}</td>
+            <td>{{employee.salarylocal}}</td>
+            <td>{{employee.salarydollars}}</td>
+            <td>{{employee.calification}}</td>
+        </tr>
+        {% endfor%}
+    </table>
+</div>
+
+{% endblock%}

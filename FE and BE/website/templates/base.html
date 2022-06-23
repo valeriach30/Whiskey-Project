@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+
+    <!-- -------------------------------- INCLUDE CSS FILES ---------------------------------->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="static/navbar.css">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2722/2722538.png">
+    <link rel="stylesheet" href="static/popup.css">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='suscribe.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='login.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='profile.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='products.css')}}">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+    <!-- -------------------------------- JAVASCRIPT FILES ---------------------------------->
+
+    <script src="https://kit.fontawesome.com/dd5559ee21.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+        integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+        crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+        integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+        crossorigin=""></script>
+    <!-- -------------------------------- TITLE ---------------------------------->
+
+    <title>{% block title %}Inicio{% endblock %}</title>
+</head>
+
+<!-- -------------------------------- BODY ---------------------------------->
+
+<body>
+    <!-- -------------------------------- message ---------------------------------->
+
+    <div class="p-2 text-center" id="topbar">
+        <strong style="z-index: 900;">Welcome to the best whiskey store</strong>
+    </div>
+
+    <!-- -------------------------------- nav bar ---------------------------------->
+
+    <div class="flexMain sticky-top py-4" id="mainNavigation">
+
+        <!-- -------------------------------- left pages ---------------------------------->
+        <div class="flex3">
+            <div class="d-md-none d-xl-none d-lg-none">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="list-unstyled d-none d-md-block">
+                <li class="mx-4 d-inline-block"><a href="/home">Home</a></li>
+                <li class="mx-4 d-inline-block"><a href="/products">Products</a></li>
+                <li class="mx-4 d-inline-block"><a href="/suscribe">Suscribe</a></li>
+                <li class="mx-4 d-inline-block"><a href="/admin">Admin</a></li>
+            </ul>
+        </div>
+
+        <!-- -------------------------------- title ---------------------------------->
+
+        <div class="flex2" id="logo">
+            <a class="logo" id="brandLink" href="#">THE WHISKEY EXCHANGE</a>
+        </div>
+
+        <!-- -------------------------------- right pages ---------------------------------->
+        <div class="flex3" id="icons">
+            <ul class="list-unstyled">
+                <li class="hideAtCustom mx-4 d-inline-block">
+                    <a href="/login">
+                        <img class="navIcon"
+                            src="https://d338t8kmirgyke.cloudfront.net/icons/icon_pngs/000/000/809/original/login.png" />
+                    </a>
+                </li>
+                <li class="hideAtCustom mx-4 d-inline-block">
+                    <a href="/profile">
+                        <img class="navIcon"
+                            src="https://icons-for-free.com/download-icon-customer+information+personal+profile+user+icon-1320086045331670685_256.ico" />
+                    </a>
+                </li>
+                <li class="mx-4 d-inline-block">
+                    <a href="/shopcar">
+                        <img class="navIcon" src="https://htmljstemplates.com/static_files/images/cartIcon.png" />
+                    </a>
+                </li>
+                <li class="mx-4 d-inline-block">
+                    <a href="/orders">
+                        <img class="navIcon" src="https://icon-library.com/images/box-icon/box-icon-17.jpg" />
+                    </a>
+                </li>
+                <li class="hideAtCustom mx-4 d-inline-block">
+                    <a href="/logout">
+                        <img class="navIcon" src="https://aux.iconspalace.com/uploads/login-icon-256.png" />
+                    </a>
+                </li>
+                <li class="hideAtCustom mx-4 d-inline-block">
+                    {% block country %}{% endblock%}
+
+                    <!-- ---------------------- pop up for choosing country --------------------------->
+                    <div id="id01" class="modal" style="background-color: #fbfbfb;">
+                        <span onclick="document.getElementById('id01').style.display='none'" class="close"
+                            title="Close Modal">&times;</span>
+                        <div class="form-popup" id="myForm">
+                            <form class="form-container" action="/setcookie" method="POST">
+                                <h1>Choose your country</h1>
+                                <hr>
+                                <label for="country"><b>Select a Country</b></label>
+                                <select name="country" id="country">
+                                    <option value="1">United States</option>
+                                    <option value="2">Ireland</option>
+                                    <option value="3">Scotland</option>
+                                </select>
+                                <hr>
+                                <div class="clearfix">
+                                    <button type="button" onclick="document.getElementById('id01').style.display='none'"
+                                        style="background-color: #f44336; padding: 14px 50px;"">Cancel</button>
+                                        <button type=" submit"
+                                        style="background-color: #48cd67; padding: 14px 50px;">Accept</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    {% block content%}
+    {% endblock%}
+
+    <!-------------------------JAVASCRIPT FILES --------------------------->
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+    <script>
+        var mainNavigation = document.getElementById('mainNavigation')
+        var brandLink = document.getElementById('brandLink')
+        window.onscroll = function () {
+            if (window.pageYOffset > mainNavigation.offsetHeight) {
+                brandLink.innerHTML = "THE WHISKEY EXCHANGE"
+            } else {
+                brandLink.innerHTML = "THE WHISKEY EXCHANGE"
+            }
+        }
+        window.onresize = function () {
+            if (window.innerWidth < 660) {
+                brandLink.innerHTML = "THE WHISKEY EXCHANGE"
+            } else {
+                brandLink.innerHTML = "THE WHISKEY EXCHANGE"
+            }
+        }
+    </script>
+    <script src="static/slideshow.js"></script>
+    <script src="static/popup.js"></script>
+</body>
+
+</html>

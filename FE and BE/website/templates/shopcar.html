@@ -1,0 +1,155 @@
+<!-- EXTEND BASE -->
+{%extends "base.html"%}
+
+<!-- TITLE -->
+{% block title %}Shopping Cart{% endblock %}
+
+<!-------------------------------- DETERMINE THE COUNTRY FOR THE NAV BAR FLAG---------------------------------->
+{% block country %}
+{% if country == '1'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://images.emojiterra.com/twitter/512px/1f1fa-1f1f8.png" />
+</button>
+{% endif %}
+{% if country == '2'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://hotemoji.com/images/dl/h/flag-of-ireland-emoji-by-twitter.png" />
+</button>
+{% endif %}
+{% if country == '3'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon"
+        src="https://images.emojiterra.com/twitter/512px/1f3f4-e0067-e0062-e0073-e0063-e0074-e007f.png" />
+</button>
+{% endif %}
+{% endblock%}
+
+<!-- -------------------------------- PAGE CONTENT ---------------------------------->
+{% block content%}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='shoppingcart.css')}}">
+<div class="container px-3 my-5 clearfix">
+    <!-- Shopping cart table -->
+    <div class="card">
+        <div class="card-header">
+            <h2>Shopping Cart</h2>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered m-0">
+                    <thead>
+                        <tr>
+                            <!-- Set columns width -->
+                            <th class="text-center py-3 px-4" style="min-width: 400px;">Product Name &amp; Details</th>
+                            <th class="text-right py-3 px-4" style="width: 100px;">Price</th>
+                            <th class="text-center py-3 px-4" style="width: 120px;">Quantity</th>
+                            <th class="text-right py-3 px-4" style="width: 100px;">Total</th>
+                            <th class="text-center align-middle py-3 px-0" style="width: 40px;"><a href="#"
+                                    class="shop-tooltip float-none text-light" title=""
+                                    data-original-title="Clear cart"><i class="ino ion-md-trash"></i></a></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart%}
+                        <tr>
+                            <td class="p-4">
+                                <div class="media align-items-center">
+                                    <img src="data:;base64,{{ item.productImage }}"
+                                        class="d-block ui-w-40 ui-bordered mr-4" alt="">
+                                    <div class="media-body">
+                                        <a href="#" class="d-block text-dark">{{item.name}}</a>
+                                        <small>
+                                            <span class="text-muted">Flavour:</span>{{item.flavour}}
+                                            <span class="text-muted">Size: </span>{{item.size}} ML
+                                            <span class="text-muted">Year: </span>{{item.year}}
+                                        </small>
+                                    </div>
+                                </div>
+                            </td>
+                            {% if country == '1'%}
+                            <td class="text-right font-weight-semibold align-middle p-4">${{item.price}}</td>
+                            {% endif %}
+                            {% if country == '2'%}
+                            <td class="text-right font-weight-semibold align-middle p-4">€{{item.price}}</td>
+                            {% endif %}
+                            {% if country == '3'%}
+                            <td class="text-right font-weight-semibold align-middle p-4">£{{item.price}}</td>
+                            {% endif %}
+                            <div class="quantity">
+                                <td class="align-middle p-4">
+                                    <input name="quant" type="number" class="form-control text-center"
+                                        id="{{loop.index}}" value="1"
+                                        onchange="updateQuantity(this, '{{item.price}}', '{{loop.index}}', '{{total}}');">
+                                </td>
+                            </div>
+                            <td class="text-right font-weight-semibold align-middle p-4">
+                                <span id="output{{loop.index}}">{{item.price}}</span>
+                            </td>
+                            <td class="text-center align-middle px-0"><a href="#"
+                                    class="shop-tooltip close float-none text-danger" title=""
+                                    data-original-title="Remove">×</a></td>
+                        </tr>
+                        {% endfor%}
+                    </tbody>
+                </table>
+            </div>
+            <!-- / Shopping cart table -->
+
+            <div class="d-flex flex-wrap justify-content-between align-items-center pb-4">
+                <div class="mt-4">
+                </div>
+                <div class="d-flex">
+                    <div class="text-right mt-4">
+                        <label class="text-muted font-weight-normal m-0">Total price</label>
+                        <div class="text-large">
+                            <strong>
+                                <span id="totalPrice">{{total}}
+                                </span>
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="float-right">
+                <button type="button" class="btn btn-lg btn-default md-btn-flat mt-2 mr-3">Back to shopping</button>
+                <button type="button" class="btn btn-lg btn-primary mt-2" onclick="checkout()">Checkout</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+
+    var carTotal = 0;
+
+    // Get the list with amount of each product
+    var listQuantG = JSON.parse('{{ quantList | tojson }}');
+    listQuantG = JSON.parse(listQuantG);
+
+    function updateQuantity(quantityInput, price, id, total) {
+        // Get quantity 
+        var value = $(quantityInput).val();
+
+        // Get new total
+        total -= price;
+        var newTotal = value * price;
+        total += newTotal;
+
+        // Update new values in the page
+        var str = "output" + id;
+        document.getElementById(str).innerHTML = newTotal;
+        document.getElementById("totalPrice").innerHTML = total;
+
+        // Save in global variables 
+        carTotal = total;
+        idI = parseInt(id);
+        listQuantG[idI - 1][1] = value;
+    }
+    function checkout() {
+        window.location = '/redcheckout?listQuant=' + listQuantG;
+    }
+</script>
+{% endblock%}

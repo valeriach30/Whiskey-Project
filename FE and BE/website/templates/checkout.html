@@ -1,0 +1,171 @@
+<!-- EXTEND BASE -->
+{%extends "base.html"%}
+
+<!-- TITLE -->
+{% block title %}Check Out{% endblock %}
+
+<!-------------------------------- DETERMINE THE COUNTRY FOR THE NAV BAR FLAG---------------------------------->
+{% block country %}
+{% if country == '1'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://images.emojiterra.com/twitter/512px/1f1fa-1f1f8.png" />
+</button>
+{% endif %}
+{% if country == '2'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://hotemoji.com/images/dl/h/flag-of-ireland-emoji-by-twitter.png" />
+</button>
+{% endif %}
+{% if country == '3'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon"
+        src="https://images.emojiterra.com/twitter/512px/1f3f4-e0067-e0062-e0073-e0063-e0074-e007f.png" />
+</button>
+{% endif %}
+{% endblock%}
+
+<!-- -------------------------------- PAGE CONTENT ---------------------------------->
+{% block content%}
+
+<!-- -------------------------------- LEAFLET API ---------------------------------->
+
+<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+    integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+    crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+    integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+    crossorigin=""></script>
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='checkout.css')}}">
+
+
+<!-- -------------------------------- CONTENT ---------------------------------->
+
+<div class="page">
+    <!-- -------------------------------- LOCATION ---------------------------------->
+
+
+    <h1>Choose your Location</h1>
+    <input type="radio" name="locationOption" id="option-new" value="1">
+    <label for="option">Pick Location</label>
+    <input type="radio" name="locationOption" id="option-saved" value="2">
+    <label for="option">Use saved location</label>
+    <div id="map" style="width: 600px; height: 400px;"></div>
+    <p>Optional: Give a name and save your new location</p>
+    <input type="text" id="NameLoc" name="NameLoc" placeholder="House">
+    <h4> Use a saved location</h4>
+    <select name="location">
+        {% for loc in locations%}
+        <option value="{{loc[0]}}" id="location">{{loc[0]}}</option>
+        {% endfor%}
+        <option value="0" id="location">None</option>
+    </select>
+    <hr>
+
+    <!-- -------------------------------- PAYMENT ---------------------------------->
+
+    <h1>Choose your payment method</h1>
+    <input type="radio" name="paymentOption" id="newpaymentOption" value="1">
+    <label for="option">Use new payment method</label>
+    <input type="radio" name="paymentOption" id="savedpaymentOption" value="2">
+    <label for="option">Use saved payment method</label>
+    <p>Payment Type</p>
+    <select id="PaymenType" name="PaymenType">
+        <option value="1">Credit Card</option>
+        <option value="2">Debit Card</option>
+    </select>
+    <p>Name on card &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp; Account Number</p>
+    <input type="text" id="Name" name="Name" placeholder="John More Do">
+    <input type="text" id="number" name="number" placeholder="Account Number">
+    <p>Expiration Date &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp; CVV</p>
+    <input type="date" id="date" name="date" placeholder="">
+    <input type="text" id="cvv" name="cvv" placeholder="552">
+    <p></p>
+    <h4>Use saved payment method</h4>
+    <select name="savedCard">
+        <option value="{{cardString}}" id="savedCard">{{cardString}}</option>
+    </select>
+    <p></p>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <button id="pay" value="1" class="btn2" onclick="updateCoordinate()"> Complete Payment</button>
+
+    <hr>
+</div>
+
+
+<!-- -------------------------------- SCRIPT FOR THE MAP API ---------------------------------->
+
+<script>
+    // Global variables that are gonna be send to the backend
+    latitude = '{{x}}';
+    longitude = '{{y}}';
+
+    // Var for the map
+    var map = L.map('map').setView([51.505, -0.09], 13);
+
+    var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    // Set default location point
+    var marker = L.marker([latitude, longitude]).addTo(map)
+        .bindPopup('Current location').openPopup();
+
+    // Gets new location when the map is clicked somewhere
+    function onMapClick(e) {
+        lat = e.latlng.lat;
+        lon = e.latlng.lng;
+
+        // Save in global variables to send to backend
+        latitude = lat;
+        longitude = lon;
+        console.log("You clicked the map at LAT: " + lat + " and LONG: " + lon);
+
+        // Delete the current marker
+        if (marker != undefined) {
+            map.removeLayer(marker);
+        };
+
+        //Add the new marker
+        marker = L.marker([lat, lon]).addTo(map);
+
+    }
+    // Add event on click
+    map.on('click', onMapClick);
+    $("button").click(function () {
+        var fired_button = $(this).val();
+        if (fired_button) {
+
+            // Get all the info of the form
+
+            var LocationOption = document.getElementById('option-new').checked;
+            var LocationName = document.getElementById("NameLoc").value;
+            var LocationSavedId = document.getElementById("location").value;
+
+            var paymentOption = document.getElementById("newpaymentOption").checked;
+            var PaymenType = document.getElementById("PaymenType").value;
+            var paymentName = document.getElementById("Name").value;
+            var paymentnumber = document.getElementById("number").value;
+            var paymentdate = document.getElementById("date").value;
+            var paymentcvv = document.getElementById("cvv").value;
+            var paymentsavedCard = document.getElementById("savedCard").value;
+
+            window.location = '/purchase?X=' + latitude + "&Y=" + longitude +
+                "&LocationOption=" + LocationOption + "&LocationName=" + LocationName +
+                "&LocationSavedId=" + LocationSavedId + "&paymentOption=" + paymentOption +
+                "&PaymenType=" + PaymenType + "&paymentName=" + paymentName +
+                "&paymentnumber=" + paymentnumber + "&paymentdate=" + paymentdate +
+                "&paymentcvv=" + paymentcvv + "&paymentsavedCard=" + paymentsavedCard;
+        }
+        else {
+        }
+    });
+</script>
+
+
+{% endblock%}

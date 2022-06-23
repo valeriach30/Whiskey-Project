@@ -1,0 +1,276 @@
+<!-- EXTEND BASE -->
+{%extends "base.html"%}
+
+<!-- TITLE -->
+{% block title %}Admin{% endblock %}
+
+<!-------------------------------- DETERMINE THE COUNTRY FOR THE NAV BAR FLAG---------------------------------->
+{% block country %}
+{% if country == '1'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://images.emojiterra.com/twitter/512px/1f1fa-1f1f8.png" />
+</button>
+{% endif %}
+{% if country == '2'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://hotemoji.com/images/dl/h/flag-of-ireland-emoji-by-twitter.png" />
+</button>
+{% endif %}
+{% if country == '3'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon"
+        src="https://images.emojiterra.com/twitter/512px/1f3f4-e0067-e0062-e0073-e0063-e0074-e007f.png" />
+</button>
+{% endif %}
+{% endblock%}
+
+<!-- -------------------------------- PAGE CONTENT ---------------------------------->
+{% block content%}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='admin.css')}}">
+
+<!-- -------------------------------- FLASH MESSAGES  ---------------------------------->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+{% if category == 'error'%}
+<div class="alert alert-danger alter-dismissable fade show" role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% else %}
+<div class="alert alert-success alter-dismissable fade show" role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endwith%}
+
+<div class="formA">
+    <h1></h1>
+    <!--------------------------------ADD NEW PRODUCT TYPE--------------------------------->
+    <h3>Add a new product type</h3>
+    <form action="/addTypeProd" method="POST">
+        <input type="text" id="Name" name="Name" placeholder="Name">
+        <input type="submit" value="Submit">
+    </form>
+    <hr>
+
+    <!--------------------------------MODIFY PRODUCT TYPE--------------------------------->
+    <h3>Modify product type</h3>
+    <form action="/modifyTypeProd" method="POST">
+        <select id="category" name="category">
+            {% for cat in categories%}
+            <option value="{{loop.index}}">{{cat.name}}</option>
+            {% endfor%}
+        </select>
+        <p></p>
+        <input type="text" id="NewName" name="NewName" placeholder="NewName">
+        <input type="submit" value="Submit">
+    </form>
+    <hr>
+
+    <!--------------------------------DELETE PRODUCT TYPE--------------------------------->
+    <h3>Delete product type</h3>
+    <form action="/deleteTypeProd" method="POST">
+        <select id="category" name="category">
+            {% for cat in categories%}
+            <option value="{{loop.index}}">{{cat.name}}</option>
+            {% endfor%}
+        </select>
+        <p></p>
+        <input type="submit" value="Submit">
+    </form>
+    <hr>
+
+    <!--------------------------------ADD NEW PRODUCT--------------------------------->
+    <h3>Add a new product</h3>
+    <form action="/addNewProd" method="POST">
+
+        <input type="text" id="Name" name="Name" placeholder="Name">
+        <p></p>
+
+        <input type="text" id="Price" name="Price" placeholder="Price">
+        <p></p>
+
+        <input type="text" id="Flavour" name="Flavour" placeholder="Flavour">
+        <p></p>
+
+        <input type="text" id="Year" name="Year" placeholder="Year">
+        <p></p>
+
+        <input type="text" id="Size" name="Size" placeholder="Size">
+        <p></p>
+
+        <input type="number" id="Quantity" name="Quantity" placeholder="Quantity">
+        <p></p>
+
+        <input type="text" id="Description" name="Description" placeholder="Description">
+        <p>Only for suscribers?</p>
+        <select id="visible" name="visible">
+            <option value="0">Yes</option>
+            <option value="1">No</option>
+        </select>
+        <p></p>
+
+        <select id="category" name="category">
+            {% for cat in categories%}
+            <option value="{{loop.index}}">{{cat.name}}</option>
+            {% endfor%}
+        </select>
+        <p></p>
+
+        <select id="country" name="country">
+            <option value="1">United States</option>
+            <option value="2">Ireland</option>
+            <option value="3">Scotland</option>
+        </select>
+        <p></p>
+
+        <input type="file" id="image" name="image">
+        <input type="submit" value="Submit">
+    </form>
+
+    <hr>
+    <!--------------------------------MODIFY PRODUCT--------------------------------->
+    <h3>Modify product</h3>
+    <form action="/modifyProd" method="POST">
+        <select id="product" name="product">
+            {% for prod in products%}
+            <option value="{{loop.index}}">{{prod.name}} ( {{prod.country}} )</option>
+            {% endfor%}
+        </select>
+
+        <input type="text" id="Name" name="Name" placeholder="Name">
+        <p></p>
+
+        <input type="text" id="Price" name="Price" placeholder="Price">
+        <p></p>
+
+        <input type="text" id="Flavour" name="Flavour" placeholder="Flavour">
+        <p></p>
+
+        <input type="text" id="Year" name="Year" placeholder="Year">
+        <p></p>
+
+        <input type="text" id="Size" name="Size" placeholder="Size">
+        <p></p>
+
+        <input type="text" id="Description" name="Description" placeholder="Description">
+        <p></p>
+
+        <select id="visible" name="visible">
+            <option value="0">Yes</option>
+            <option value="1">No</option>
+        </select>
+        <p></p>
+
+        <select id="category" name="category">
+            {% for cat in categories%}
+            <option value="{{loop.index}}">{{cat.name}}</option>
+            {% endfor%}
+        </select>
+        <p></p>
+
+        <select id="country" name="country">
+            <option value="1">United States</option>
+            <option value="2">Ireland</option>
+            <option value="3">Scotland</option>
+        </select>
+        <p></p>
+
+        <input type="file" id="image" name="image">
+        <input type="submit" value="Submit">
+    </form>
+    <hr>
+    <!--------------------------------DELETE PRODUCT--------------------------------->
+    <h3>Delete product</h3>
+    <form action="/deleteProd" method="POST">
+        <select id="product" name="product">
+            {% for prod in products%}
+            <option value="{{loop.index}}">{{prod.name}} ( {{prod.country}} )</option>
+            {% endfor%}
+        </select>
+        <input type="submit" value="Submit">
+    </form>
+    <hr>
+    <!--------------------------------PRODUCTS REPORT--------------------------------->
+    <h3>Products Reports</h3>
+    <p></p>
+    <form action="/reportProd" method="POST">
+
+        <input type="checkbox" id="InventoryChBox" name="InventoryChBox" value="1">
+        <label for="InventoryChBox" style="color: black;">By inventory</label>
+        <p></p>
+        <input type="text" id="Inventory" name="Inventory" placeholder="Number of inventory">
+        <p></p>
+
+        <input type="checkbox" id="SalesChBox" name="SalesChBox" value="1">
+        <label for="SalesChBox" style="color: black;">By Sales</label>
+        <p></p>
+        <input type="text" id="Sales" name="Sales" placeholder="Number of Sales">
+        <p></p>
+
+        <input type="checkbox" id="YearChBox" name="YearChBox" value="1">
+        <label for="YearChBox" style="color: black;">By Year</label>
+        <p></p>
+        <input type="text" id="Year" name="Year" placeholder="Year of the product">
+        <p></p>
+
+        <input type="checkbox" id="TypeChBox" name="TypeChBox" value="1">
+        <label for="TypeChBox" style="color: black;">By Type</label>
+        <p></p>
+        <select id="category" name="category">
+            {% for cat in categories%}
+            <option value="{{loop.index}}">{{cat.name}}</option>
+            {% endfor%}
+        </select>
+        <p></p>
+
+        <input type="checkbox" id="CountryChBox" name="CountryChBox" value="1">
+        <label for="CountryChBox" style="color: black;">By Country</label>
+        <p></p>
+
+        <select id="country" name="country">
+            <option value="1">Ireland</option>
+            <option value="2">Scotland</option>
+            <option value="3">United States</option>
+        </select>
+        <input type="submit" value="Submit">
+    </form>
+    <br><br>
+    <table style="text-align: center; margin: 0 auto; text-align: left;">
+        <tr bgcolor='grey' align='center'>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Flavour</th>
+            <th>Size</th>
+            <th>Country</th>
+            <th>Inventory</th>
+            <th>Sales</th>
+        </tr>
+        {% for productR in productsReport%}
+        <tr bgcolor='lightgrey' align='center'>
+            <td>{{productR.Product_Name}}</td>
+            <td>{{productR.Category}}</td>
+            <td>{{productR.Price}}</td>
+            <td>{{productR.Flavour}}</td>
+            <td>{{productR.Size}}</td>
+            <td>{{productR.Country}}</td>
+            <td>{{productR.Invertory}}</td>
+            <td>{{productR.Items_Sell}}</td>
+        </tr>
+        {% endfor%}
+    </table>
+
+</div>
+{% endblock%}

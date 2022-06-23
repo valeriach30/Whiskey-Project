@@ -1,0 +1,85 @@
+html,
+body {
+    height: 100%;
+}
+
+.page {
+    margin: 30px;
+}
+
+.leaflet-container {
+    height: 400px;
+    width: 600px;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+
+.btn {
+    background: none;
+    color: #e07a5f;
+    border: 2px solid #e07a5f;
+    font-size: 1em;
+    transition: color 0.2s, border 0.2s, box-shadow 0.2s, transform 0.2s;
+    font-size: 20px;
+}
+
+.btn:hover {
+    border-color: #335c67;
+    color: black;
+    box-shadow: 0 0.5em 0.5em -0.4em #335c67;
+    transform: translateY(-0.25em);
+    cursor: pointer;
+}
+
+h1 {
+    margin-bottom: 10px;
+}
+
+p,
+h4 {
+    margin: 15px 0;
+}
+
+label {
+    color: black;
+}
+
+input[type=text],
+select {
+    width: 15%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type=date],
+select {
+    width: 15%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.btn2 {
+    background: none;
+    color: #adc178;
+    border: 2px solid #adc178;
+    font-size: 1em;
+    transition: color 0.2s, border 0.2s, box-shadow 0.2s, transform 0.2s;
+    font-size: 25px;
+}
+
+.btn2:hover {
+    border-color: #3a5a40;
+    color: #3a5a40;
+    box-shadow: 0 0.5em 0.5em -0.4em #3a5a40;
+    transform: translateY(-0.25em);
+    cursor: pointer;
+}

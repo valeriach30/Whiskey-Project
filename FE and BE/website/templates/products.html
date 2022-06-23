@@ -1,0 +1,169 @@
+<!-- EXTEND BASE -->
+{%extends "base.html"%}
+
+<!-- TITLE -->
+{% block title %}Products{% endblock %}
+
+<!-------------------------------- DETERMINE THE COUNTRY FOR THE NAV BAR FLAG---------------------------------->
+
+{% block country %}
+{% if country == '1'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://images.emojiterra.com/twitter/512px/1f1fa-1f1f8.png" />
+</button>
+{% endif %}
+{% if country == '2'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://hotemoji.com/images/dl/h/flag-of-ireland-emoji-by-twitter.png" />
+</button>
+{% endif %}
+{% if country == '3'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon"
+        src="https://images.emojiterra.com/twitter/512px/1f3f4-e0067-e0062-e0073-e0063-e0074-e007f.png" />
+</button>
+{% endif %}
+{% endblock%}
+
+
+<!-- ------------------------------- SHOW PRODUCTS ------------------------------- -->
+
+{% block content%}
+<div class="container d-flex justify-content-center mt-50 mb-50"
+    style="margin-left: auto;margin-right: 0;z-index: 1000; ">
+    <div class="row">
+        <div class="col-md-10">
+            <!------------------------------- SHOW ALL THE PRODUCTS ------------------------------->
+            {% for product in products%}
+            <div class="card card-body">
+                <div
+                    class="media align-items-center align-items-lg-start text-center text-lg-left flex-column flex-lg-row">
+                    <div class="mr-2 mb-3 mb-lg-0">
+
+                        <img src="data:;base64,{{ product.productImage }}" width=" 150" height="150" alt="">
+
+                    </div>
+
+                    <div class="media-body">
+                        <h6 class="media-title font-weight-semibold">
+                            <p>{{product.name}}</p>
+                        </h6>
+
+                        <ul class="list-inline list-inline-dotted mb-3 mb-lg-2">
+                            <li class="list-inline-item">{{product.category}}</li>
+                        </ul>
+
+                        <p class="mb-3"> Taste: {{product.flavour}}
+                            | Year: {{product.year}}
+                            | Size: {{product.size}} ML
+                            | Available at: {{product.country}}</p>
+
+                    </div>
+
+                    <div class="mt-3 mt-lg-0 ml-lg-3 text-center">
+                        {% if country == '1'%}
+                        <h3 class="mb-0 font-weight-semibold">${{product.price}}</h3>
+                        {% endif %}
+                        {% if country == '2'%}
+                        <h3 class="mb-0 font-weight-semibold">€{{product.price}}</h3>
+                        {% endif %}
+                        {% if country == '3'%}
+                        <h3 class="mb-0 font-weight-semibold">£{{product.price}}</h3>
+                        {% endif %}
+                        <div class="text-muted">{{product.invertory}} left</div>
+                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+                        <script type="text/javascript"></script>
+                        <button type="button" value="{{loop.index}}" class="btn btn-warning mt-4 text-white">
+                            <i class="icon-cart-add mr-2">
+                            </i>
+                            Buy
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor%}
+        </div>
+    </div>
+</div>
+
+<script>
+    $("button").click(function () {
+        var fired_button = $(this).val();
+        if (fired_button) {
+            window.location = '/product?buttonId=' + fired_button;
+        }
+        else {
+        }
+    });
+</script>
+<!-- ------------------------------- SIDE BAR FOR FILTERS ------------------------------- -->
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<div class="sidenav">
+    <p></p>
+    <p></p>
+    <p></p>
+    <p></p>
+    <p></p>
+    <p></p>
+    <p></p>
+    <a href="#"></a>
+    <a href="#"></a>
+    <form class="example" action="/searchName" method="POST" style="margin:auto;max-width:300px">
+        <input type="text" placeholder="Search by name..." name="nameSearch">
+        <button type="submit" class="search">
+            <img src="https://freeiconshop.com/wp-content/uploads/edd/search-outline-filled.png" alt="">
+        </button>
+        <a href="#"></a>
+        <a href="#"></a>
+    </form>
+    <form action="/orderProducts" method="POST" style="text-align:center;">
+        <p class="text">Order By</p>
+        <input type="radio" name="option" id="cheapest" value="1">
+        <label for="cheapest">Cheapest</label>
+        <input type="radio" name="option" id="cheapest" value="2">
+        <label for="expensive">Most Expensive</label>
+        <input type="radio" name="option" id="nearest" value="3">
+        <label for="nearest">Nearest available</label>
+        <input type="radio" name="option" id="furthest" value="4">
+        <label for="furthest">Furthest available</label>
+        <p></p>
+        <input type="radio" name="option" id="popular" value="5">
+        <label for="popular">Most popular</label>
+        <input type="radio" name="option" id="Lpopular" value="6">
+        <label for="Lpopular">Least popular</label>
+        {% for cat in categories%}
+        <input type="radio" name="option" value="{{cat.name}}">
+        <label>{{cat.name}}</label>
+        {% endfor%}
+        <hr>
+        <button type="submit" class="subbun">Submit</button>
+    </form>
+</div>
+
+<!-- -------------------------------- FLASH MESSAGES  ---------------------------------->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+{% if category == 'error'%}
+<div class="alert alert-danger alter-dismissable fade show" role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% else %}
+<div class="alert alert-success alter-dismissable fade show" role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endwith%}
+{% endblock %}

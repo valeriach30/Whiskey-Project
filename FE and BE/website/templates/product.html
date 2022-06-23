@@ -1,0 +1,134 @@
+<!-- EXTEND BASE -->
+{%extends "base.html"%}
+
+<!-- TITLE -->
+{% block title %}Product Page{% endblock %}
+
+<!-------------------------------- DETERMINE THE COUNTRY FOR THE NAV BAR FLAG---------------------------------->
+
+{% block country %}
+{% if country == '1'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://images.emojiterra.com/twitter/512px/1f1fa-1f1f8.png" />
+</button>
+{% endif %}
+{% if country == '2'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://hotemoji.com/images/dl/h/flag-of-ireland-emoji-by-twitter.png" />
+</button>
+{% endif %}
+{% if country == '3'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon"
+        src="https://images.emojiterra.com/twitter/512px/1f3f4-e0067-e0062-e0073-e0063-e0074-e007f.png" />
+</button>
+{% endif %}
+{% endblock%}
+
+<!-- -------------------------------- PAGE CONTENT ---------------------------------->
+{% block content%}
+<hr style="visibility: hidden;">
+<hr style="visibility: hidden;">
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='product.css')}}">
+<div class="card-wrapper">
+    <div class="card">
+        <!-- card left -->
+        <div class="product-imgs">
+            <div class="img-display">
+                <div class="img-showcase">
+                    <img src="data:;base64,{{ prod.productImage }}" alt="shoe image">
+                </div>
+            </div>
+        </div>
+        <!-- card right -->
+        <div class="product-content">
+            <h2 class="product-title">{{prod.name}}</h2>
+            <p class="product-link">{{prod.category}}</p>
+            <div class="product-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <span>5 ({{quantityReviews}} reviews)</span>
+            </div>
+
+            <div class="product-price">
+                <p class="new-price">Price:
+                    {% if country == '1'%}
+                    <span>${{prod.price}}</span>
+                    {% endif %}
+                    {% if country == '2'%}
+                    <span>€{{prod.price}}</span>
+                    {% endif %}
+                    {% if country == '3'%}
+                    <span>£{{prod.price}}</span>
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="product-detail">
+                <h2>about this item: </h2>
+                <p>{{prod.descrip}}</p>
+                <ul>
+                    <li>Flavour: <span>{{prod.flavour}}</span></li>
+                    <li>Year: <span>{{prod.year}}</span></li>
+                    <li>Size: <span>{{prod.size}}</span></li>
+                    <li>Shipping Area: <span>All over the world</span></li>
+                    <li>Shipping Fee: <span>Depends</span></li>
+                </ul>
+            </div>
+
+            <div class="purchase-info">
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+                <button type="button" class="btn" value="{{prod.idProduct}}">
+                    Add to Cart <i class="fas fa-shopping-cart"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- -------------------------------- REVIEWS OF THE PRODUCT ---------------------------------->
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='comments.css')}}">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="page">
+    <section class="content-item" id="comments">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8" style="width: 50%; margin: 0 auto;">
+
+                    <h3>{{quantityReviews}} Reviews</h3>
+
+                    {% for review in reviews%}
+                    <div class="media">
+                        <a class="pull-left" href="#"><img class="media-object"
+                                src="https://cdn-icons-png.flaticon.com/512/3003/3003035.png" alt=""></a>
+                        <div class="media-body">
+                            <h4 class="media-heading">{{review.name}} {{review.surname}}</h4>
+                            <p>{{review.comment}}</p>
+                            <ul class="list-unstyled list-inline media-detail pull-left">
+                                <li><i class="fa fa-calendar"></i>{{review.RevDate}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    {% endfor%}
+                </div>
+            </div>
+    </section>
+</div>
+
+<script>
+    $("button").click(function () {
+        var fired_button = $(this).val();
+        if (fired_button) {
+            window.location = '/addProd?productId=' + fired_button;
+        }
+        else {
+        }
+    });
+</script>
+{% endblock%}

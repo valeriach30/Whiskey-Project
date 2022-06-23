@@ -1,0 +1,51 @@
+.flexMain {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex3 {
+    flex: 3;
+    text-align: center;
+}
+
+.flex2 {
+    flex: 2;
+    text-align: center;
+}
+
+ul {
+    margin-top: 8px;
+}
+
+#topbar {
+    background: #fb9e4b;
+    z-index: 900;
+}
+
+#mainNavigation {
+    background: #fff5e6;
+    box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.3)
+}
+
+#mainNavigation a {
+    text-decoration: none;
+    color: #232323;
+    font-weight: bold;
+}
+
+.logo {
+    font-size: 32px;
+    line-height: 1em;
+    font-family: 'Playfair Display', serif;
+}
+
+.navIcon {
+    width: 24px;
+}
+
+@media screen and (max-width:656px) {
+    .hideAtCustom {
+        display: none !important
+    }
+}

@@ -1,0 +1,92 @@
+<!-- EXTEND BASE -->
+{%extends "base.html"%}
+
+<!-- TITLE -->
+{% block title %}Check Out{% endblock %}
+
+<!-------------------------------- DETERMINE THE COUNTRY FOR THE NAV BAR FLAG---------------------------------->
+{% block country %}
+{% if country == '1'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://images.emojiterra.com/twitter/512px/1f1fa-1f1f8.png" />
+</button>
+{% endif %}
+{% if country == '2'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://hotemoji.com/images/dl/h/flag-of-ireland-emoji-by-twitter.png" />
+</button>
+{% endif %}
+{% if country == '3'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon"
+        src="https://images.emojiterra.com/twitter/512px/1f3f4-e0067-e0062-e0073-e0063-e0074-e007f.png" />
+</button>
+{% endif %}
+{% endblock%}
+
+<!-- -------------------------------- PAGE CONTENT ---------------------------------->
+{% block content%}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='checkout.css')}}">
+
+<!-- -------------------------------- CONTENT ---------------------------------->
+
+<!-- -------------------------------- FLASH MESSAGES  ---------------------------------->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+{% if category == 'error'%}
+<div class="alert alert-danger alter-dismissable fade show" role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% else %}
+<div class="alert alert-success alter-dismissable fade show" role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endwith%}
+
+<div class="page">
+    <!-- -------------------------------- PAYMENT ---------------------------------->
+
+    <form action="/Buysuscription" method="POST">
+        <h1>Choose your payment method</h1>
+        <input type="radio" name="suscriptionOption" id="new" value="1">
+        <label for="option">Add payment method</label>
+        <input type="radio" name="suscriptionOption" id="saved" value="2">
+        <label for="option">Use saved payment method</label>
+        <p>Payment Type</p>
+        <select id="PaymenType" name="PaymenType">
+            <option value="1">Credit Card</option>
+            <option value="2">Debit Card</option>
+        </select>
+        <p>Name on card &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp; Account Number</p>
+        <input type="text" id="Name" name="Name" placeholder="John More Do">
+        <input type="text" id="number" name="number" placeholder="Account Number">
+        <p>Expiration Date &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp; CVV</p>
+        <input type="date" id="date" name="date" placeholder="">
+        <input type="text" id="cvv" name="cvv" placeholder="552">
+        <p></p>
+        <h4>Use saved payment method</h4>
+        <select id="savedCard" name="savedCard">
+            <option value="1">{{card}}</option>
+        </select>
+        <p></p>
+        <button class="btn2"> Complete Payment</button>
+    </form>
+    <p></p>
+    <hr>
+</div>
+
+
+{% endblock%}

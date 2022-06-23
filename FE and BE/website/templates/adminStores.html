@@ -1,0 +1,116 @@
+<!-- EXTEND BASE -->
+{%extends "base.html"%}
+
+<!-- TITLE -->
+{% block title %}Admin{% endblock %}
+
+<!-------------------------------- DETERMINE THE COUNTRY FOR THE NAV BAR FLAG---------------------------------->
+{% block country %}
+{% if country == '1'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://images.emojiterra.com/twitter/512px/1f1fa-1f1f8.png" />
+</button>
+{% endif %}
+{% if country == '2'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://hotemoji.com/images/dl/h/flag-of-ireland-emoji-by-twitter.png" />
+</button>
+{% endif %}
+{% if country == '3'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon"
+        src="https://images.emojiterra.com/twitter/512px/1f3f4-e0067-e0062-e0073-e0063-e0074-e007f.png" />
+</button>
+{% endif %}
+{% endblock%}
+
+<!-- -------------------------------- PAGE CONTENT ---------------------------------->
+{% block content%}
+
+<!-- -------------------------------- LEAFLET API ---------------------------------->
+
+<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+    integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+    crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+    integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+    crossorigin=""></script>
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='checkout.css')}}">
+
+
+<!-- -------------------------------- CONTENT ---------------------------------->
+
+<div class="page">
+    <h3>Set store location</h3>
+    <p>Select the store you want to modify:</p>
+    <select id="store" name="store">
+        <option value="1">Ireland</option>
+        <option value="2">Scotland</option>
+        <option value="3">United States</option>
+    </select>
+    <div id="map" style="width: 800px; height: 400px;"></div>
+    <p></p>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <button class="btn" value="1" onclick="updateCoordinate()"> Save Location</button>
+    <hr>
+</div>
+
+<!-- -------------------------------- SCRIPT FOR THE MAP API ---------------------------------->
+
+<script>
+    // Global variables that are gonna be send to the backend
+    latitude = 0;
+    longitude = 0;
+
+    // Var for the map
+    var map = L.map('map').setView([51.505, -0.09], 13);
+
+    var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    // Set default location point
+    var marker = L.marker([53.344484804947356, -6.244354248046876]).addTo(map)
+        .bindPopup('Current location').openPopup();
+
+    // Gets new location when the map is clicked somewhere
+    function onMapClick(e) {
+        lat = e.latlng.lat;
+        lon = e.latlng.lng;
+
+        // Save in global variables to send to backend
+        latitude = lat;
+        longitude = lon;
+        console.log("You clicked the map at LAT: " + lat + " and LONG: " + lon);
+
+        // Delete the current marker
+        if (marker != undefined) {
+            map.removeLayer(marker);
+        };
+
+        //Add the new marker
+        marker = L.marker([lat, lon]).addTo(map);
+
+    }
+    // Add event on click
+    map.on('click', onMapClick);
+
+    // Submit form button
+    $("button").click(function () {
+        var fired_button = $(this).val();
+        if (fired_button) {
+            var storeId = document.getElementById('store').value;
+            window.location = '/modifyStore?X=' + latitude + "&Y=" + longitude + "&storeId=" + storeId
+        }
+        else {
+        }
+    });
+</script>
+
+{% endblock%}

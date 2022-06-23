@@ -1,0 +1,82 @@
+<!-- EXTEND BASE -->
+{%extends "base.html"%}
+
+<!-- TITLE -->
+{% block title %}Log in{% endblock %}
+
+<!-------------------------------- DETERMINE THE COUNTRY FOR THE NAV BAR FLAG---------------------------------->
+
+{% block country %}
+{% if country == '1'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://images.emojiterra.com/twitter/512px/1f1fa-1f1f8.png" />
+</button>
+{% endif %}
+{% if country == '2'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://hotemoji.com/images/dl/h/flag-of-ireland-emoji-by-twitter.png" />
+</button>
+{% endif %}
+{% if country == '3'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon"
+        src="https://images.emojiterra.com/twitter/512px/1f3f4-e0067-e0062-e0073-e0063-e0074-e007f.png" />
+</button>
+{% endif %}
+{% endblock%}
+
+
+<!-- -------------------------------- PAGE CONTENT ---------------------------------->
+
+{% block content%}
+<section class="login">
+    <!-- -------------------------------- LOG IN BOX ---------------------------------->
+    <div class="login_box">
+        <div class="left">
+            <div class="top_link"><a href="/signup">Not registered? Sign up now</a></div>
+            <div class="contact">
+                <form action="/login" method="POST">
+                    <h3>SIGN IN</h3>
+                    <input type="text" placeholder="USERNAME" name="user">
+                    <input type="password" placeholder="PASSWORD" name="pass">
+                    <button class="submit">Log In</button>
+                </form>
+            </div>
+        </div>
+        <div class="right">
+            <div class="right-text">
+                <h2>WELCOME BACK!</h2>
+                <h5>THE WHISKEY EXCHANGE</h5>
+            </div>
+            <div class="right-inductor">
+                <img src="" alt="">
+            </div>
+        </div>
+    </div>
+    <!-- -------------------------------- FLASH MESSAGES  ---------------------------------->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    {% if category == 'error'%}
+    <div class="alert alert-danger alter-dismissable fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% else %}
+    <div class="alert alert-success alter-dismissable fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+    {% endwith%}
+</section>
+{% endblock%}

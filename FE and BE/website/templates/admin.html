@@ -1,0 +1,47 @@
+<!-- EXTEND BASE -->
+{%extends "base.html"%}
+
+<!-- TITLE -->
+{% block title %}Admin{% endblock %}
+
+<!-------------------------------- DETERMINE THE COUNTRY FOR THE NAV BAR FLAG---------------------------------->
+{% block country %}
+{% if country == '1'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://images.emojiterra.com/twitter/512px/1f1fa-1f1f8.png" />
+</button>
+{% endif %}
+{% if country == '2'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://hotemoji.com/images/dl/h/flag-of-ireland-emoji-by-twitter.png" />
+</button>
+{% endif %}
+{% if country == '3'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon"
+        src="https://images.emojiterra.com/twitter/512px/1f3f4-e0067-e0062-e0073-e0063-e0074-e007f.png" />
+</button>
+{% endif %}
+{% endblock%}
+{% block content%}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='buttonAdmin.css')}}">
+<hr style="border: none;">
+<div style="text-align: center;">
+    <a href="/adminProd" style="color:#000000"><button class="btn">Products</button></a>
+    <p></p>
+    <a href="/adminEmp" style="color:#000000"><button class="btn">Employees</button></a>
+    <p></p>
+    <a href="/adminUserRep" style="color:#000000"><button class="btn">Users</button></a>
+    <p></p>
+    <a href="/adminCalifications" style="color:#000000"><button class="btn">Evaluations</button></a>
+    <p></p>
+    <a href="/adminStores" style="color:#000000"><button class="btn">Stores</button></a>
+    <p></p>
+    <a href="/adminSuscriptions" style="color:#000000"><button class="btn">Suscriptions</button></a>
+    <p></p>
+    <a href="/adminCoins" style="color:#000000"><button class="btn">Coins</button></a>
+</div>
+{% endblock%}

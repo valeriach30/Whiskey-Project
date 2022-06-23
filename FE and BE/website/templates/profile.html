@@ -1,0 +1,136 @@
+<!-- EXTEND BASE -->
+{%extends "base.html"%}
+
+<!-- TITLE -->
+{% block title %}Profile{% endblock %}
+
+<!-------------------------------- DETERMINE THE COUNTRY FOR THE NAV BAR FLAG---------------------------------->
+{% block country %}
+{% if country == '1'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://images.emojiterra.com/twitter/512px/1f1fa-1f1f8.png" />
+</button>
+{% endif %}
+{% if country == '2'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon" src="https://hotemoji.com/images/dl/h/flag-of-ireland-emoji-by-twitter.png" />
+</button>
+{% endif %}
+{% if country == '3'%}
+<button style="background: #fff5e6; border:0cm; padding: 0px;"
+    onclick="document.getElementById('id01').style.display='block'">
+    <img class="navIcon"
+        src="https://images.emojiterra.com/twitter/512px/1f3f4-e0067-e0062-e0073-e0063-e0074-e007f.png" />
+</button>
+{% endif %}
+{% endblock%}
+
+<!-- -------------------------------- PAGE CONTENT ---------------------------------->
+{% block content%}
+<style>
+    body {
+        background: #0e2f40;
+        /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #0e2f40, #0e2f40);
+        /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #0e2f40, #0e2f40);
+        /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        padding: 0;
+        margin: 0;
+        font-family: 'Lato', sans-serif;
+        color: #000;
+    }
+</style>
+
+<!-- -------------------------------- FLASH MESSAGES  ---------------------------------->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+{% if category == 'error'%}
+<div class="alert alert-danger alter-dismissable fade show" role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% else %}
+<div class="alert alert-success alter-dismissable fade show" role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endwith%}
+<div class="student-profile py-4">
+    <div class="container">
+        <div class="row">
+            <!-- -------------------------------- prefixed photo of the user ---------------------------------->
+            <div class="col-lg-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-transparent text-center">
+                        <img class="profile_img"
+                            src="https://cdn.picpng.com/computer/computer-user-icon-peolpe-58180.png" alt="student dp">
+                        <h3>{{name}} {{surname}}</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-0"><strong class="pr-1">Username:</strong>{{user}}</p>
+                        <p class="mb-0"><strong class="pr-1">Password:</strong>{{password}}</p>
+                        <p class="mb-0"><strong class="pr-1">Email:</strong>{{email}}</p>
+                    </div>
+                </div>
+            </div>
+            <!-- -------------------------------- info of the user ---------------------------------->
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-transparent border-0">
+                        <h3 class="mb-0"><i class="far fa-clone pr-1"></i>General Information</h3>
+                    </div>
+                    <div class="card-body pt-0">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th width="30%">Country</th>
+                                <td width="2%">:</td>
+                                <td>{{countryUser}}</td>
+                            </tr>
+                            <tr>
+                                <th width="30%">Phone</th>
+                                <td width="2%">:</td>
+                                <td>{{phone}}</td>
+                            </tr>
+                            <tr>
+                                <th width="30%">Suscription</th>
+                                <td width="2%">:</td>
+                                <td>{{suscription}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <!-- -------------------------------- EDIT PROFILE ---------------------------------->
+                <div style="height: 26px"></div>
+                <div class="card shadow-sm">
+                    <div class="card-header bg-transparent border-0">
+                        <h3 class="mb-0"><i class="far fa-clone pr-1"></i>Edit Profile</h3>
+                    </div>
+                    <div class="card-body pt-0">
+                        <p>Want to change something on your profile? Enter your new info here</p>
+                        <form action="/editProf" method="POST">
+                            <input type="text" placeholder="New Username" name="userE">
+                            <input type="text" placeholder="New Password" name="passE">
+                            <input type="text" placeholder="New Email" name="emailE">
+                            <input type="text" placeholder="New Name" name="nameE">
+                            <input type="text" placeholder="New Surname" name="surnameE">
+                            <input type="text" placeholder="New Phone" name="phoneE">
+                            <button class="editbutton">Edit Profile</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}
